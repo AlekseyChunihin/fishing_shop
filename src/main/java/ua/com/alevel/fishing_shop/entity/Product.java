@@ -1,5 +1,6 @@
 package ua.com.alevel.fishing_shop.entity;
 
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -32,10 +33,22 @@ public class Product {
     @Column(name = "product_quantity", nullable = false)
     private Integer productQuantity;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_id")
+    CartProducts cartProducts;
+
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
 
     public Product() {
+    }
+
+    public CartProducts getCartProducts() {
+        return cartProducts;
+    }
+
+    public void setCartProducts(CartProducts cartProducts) {
+        this.cartProducts = cartProducts;
     }
 
     public Integer getId() {

@@ -1,18 +1,49 @@
 package ua.com.alevel.fishing_shop.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ua.com.alevel.fishing_shop.Routes;
+import ua.com.alevel.fishing_shop.dto.user.request.SaveUserRequest;
+import ua.com.alevel.fishing_shop.dto.user.response.UserResponse;
+import ua.com.alevel.fishing_shop.service.UserService;
+
+import java.util.List;
 
 @RestController
+@RequestMapping(Routes.USERS)
 public class UserController {
 
-    @GetMapping("/users")
-    public ResponseEntity getUsers() {
-        try {
-            return ResponseEntity.ok("ITS OK");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error");
-        }
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping
+    public ResponseEntity<UserResponse> createUser(@RequestBody final SaveUserRequest userRequest) {
+        return new ResponseEntity<>(userService.createUser(userRequest), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserResponse>> findAllUsers() {
+        return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "{id}")
+    public ResponseEntity<UserResponse> findUsersById(@PathVariable final Integer id) {
+        return new ResponseEntity<>(userService.findUserByIdForResponse(id), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "{id}")
+    public ResponseEntity<UserResponse> updateUsers(@PathVariable final Integer id, @RequestBody final SaveUserRequest saveUserRequest) {
+        return new ResponseEntity<>(userService.updateUser(id, saveUserRequest), HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "{id}")
+    public ResponseEntity<UserResponse> deleteProduct(@PathVariable final Integer id) {
+        return new ResponseEntity<>(userService.deleteUser(id), HttpStatus.OK);
     }
 }

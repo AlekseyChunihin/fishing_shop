@@ -1,25 +1,27 @@
 package ua.com.alevel.fishing_shop.entity;
 
 import javax.persistence.*;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "cart_products")
+@Table(name = "cart_products", schema = "public")
 public class CartProducts {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne //WHY MANY TO ONE
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @OneToMany(mappedBy = "cartProducts")
+    List<Product> products = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(nullable = false)
-    private Integer quantity;
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
 
     public CartProducts() {
     }
@@ -32,12 +34,12 @@ public class CartProducts {
         this.id = id;
     }
 
-    public Product getProduct() {
-        return product;
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     public User getUser() {
@@ -48,11 +50,19 @@ public class CartProducts {
         this.user = user;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public void addProduct(Product product){
+        products.add(product);
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void removeProduct(Product product){
+        products.remove(product);
+    }
+
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

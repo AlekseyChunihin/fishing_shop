@@ -36,6 +36,15 @@ public class User {
     public User() {
     }
 
+    public User(Integer id, String name, String email, String password, OffsetDateTime createdAt, Set<Authority> authorities) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.createdAt = createdAt;
+        this.authorities = authorities;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -82,5 +91,17 @@ public class User {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", createdAt=" + createdAt +
+                ", authorities=" + authorities +
+                '}';
     }
 }
